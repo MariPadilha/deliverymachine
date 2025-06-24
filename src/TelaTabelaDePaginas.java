@@ -10,6 +10,7 @@ public class TelaTabelaDePaginas extends JPanel {
 
     public TelaTabelaDePaginas(DeliveryMachine jogo){
         this.jogo = jogo;
+        backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTabelaDePaginas.png").getImage();
 
         setLayout(null);
         Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
@@ -79,21 +80,10 @@ public class TelaTabelaDePaginas extends JPanel {
         add(titulo);
     }
 
-    private void criaBackground(Dimension tamanhoTela){
-        Image backgroundImage;
-        JLabel backgroundLabel;
-
-
-        backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTabelaDePaginas.png").getImage();
-
-        backgroundLabel = new JLabel(){
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
-        backgroundLabel.setBounds(0, 0, tamanhoTela.width, tamanhoTela.height);
-        add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
+
 }
