@@ -3,21 +3,24 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 
-public class TelaInicial extends JPanel {
+public class TelaInicial extends JPanel{
     private Image backgroundImage;
     private DeliveryMachine jogo;
 
     public TelaInicial(DeliveryMachine jogo){
         this.jogo = jogo;
+        jogo.gerarEnderecoVirtual();
+        criaBackground();
+        criaLetreiro();
+        criaBotao();
+    }
 
+    private void criaBackground(){
         setLayout(new BorderLayout());
         Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
         setPreferredSize(tamanhoTela);
 
         backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTelaInicial.png").getImage();
-
-        criaLetreiro();
-        criaBotao();
     }
 
     private void criaBotao(){
@@ -34,6 +37,7 @@ public class TelaInicial extends JPanel {
         botaoRedondo.setPreferredSize(new Dimension(250, 250));
 
         botaoRedondo.addActionListener(e -> {
+            JOptionPane.showMessageDialog(null, "endereco virtual gerado:" + jogo.getEnderecoVirtual());
             jogo.mostrarTela("tlb");
         });
 
@@ -85,7 +89,7 @@ public class TelaInicial extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }

@@ -1,11 +1,16 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import javax.swing.*;
 
 public class TelaTLB extends JLayeredPane{
+
     private DeliveryMachine jogo;
     private List<PostIt> postIts = new ArrayList<>();
+    private final int TLB_TAMANHO = 16;
+    private Queue<PostIt> filaTLB = new LinkedList<>();
 
     public TelaTLB(DeliveryMachine jogo){
         this.jogo = jogo;
@@ -17,11 +22,41 @@ public class TelaTLB extends JLayeredPane{
         criaBackground(tamanhoTela);
         criaPostIt(tamanhoTela);
 
-        for(int i = 0; i < postIts.size(); i++){
-            postIts.get(i).atualizar("0x1" + i, "0xA" + i);
-        }
+        JButton teste = new JButton("Inserir TLB");
+        teste.setBounds(50, 50, 150, 40);
+        teste.addActionListener(e -> {
+            String endVirt = String.format("0x%X", (int)(Math.random() * 256));
+            String endFis = String.format("0x%X", (int)(Math.random() * 256));
+            inserirNaTLB(endVirt, endFis);
+        });
+        add(teste, JLayeredPane.MODAL_LAYER);
 
-        criaBotao();
+        
+        JButton testar = new JButton("Buscar endereço");
+        testar.setBounds(220, 50, 200, 40);
+        testar.addActionListener(e -> {
+            String endVirt = jogo.getEnderecoVirtual();
+
+            if(verificar(endVirt)){
+                JOptionPane.showMessageDialog(this, "HIT na TLB para " + endVirt);
+            }else{
+                JOptionPane.showMessageDialog(this, "MISS! Inserindo " + endVirt);
+                jogo.mostrarTela("tabelaPaginas");
+                jogo.getTabelaPaginas().iniciarBusca();
+            }
+        });
+        add(testar, JLayeredPane.MODAL_LAYER);
+
+        //criaBotao();
+    }
+
+    private boolean verificar(String enderecoVirtual){
+        for(PostIt postIt : filaTLB){
+            if(postIt.getEnderecoVirtual().equals(enderecoVirtual)){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void criaBotao(){
@@ -77,7 +112,7 @@ public class TelaTLB extends JLayeredPane{
 
         backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTLB.png").getImage();
 
-        backgroundLabel = new JLabel() {
+        backgroundLabel = new JLabel(){
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -86,5 +121,26 @@ public class TelaTLB extends JLayeredPane{
         };
         backgroundLabel.setBounds(0, 0, tamanhoTela.width, tamanhoTela.height);
         add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+    }
+
+    public void inserirNaTLB(String enderecoVirtual, String enderecoFisico){
+        PostIt novo;
+
+        if(filaTLB.size() < TLB_TAMANHO){
+            novo = postIts.get(filaTLB.size());
+        }else{
+            PostIt maisAntigo = filaTLB.poll();
+            maisAntigo.atualizar("", "");
+            novo = maisAntigo;
+        }
+
+        novo.atualizar(enderecoVirtual, enderecoFisico);
+        filaTLB.add(novo);
+    }
+
+    public void resetar(){
+        for(PostIt postIt : postIts){
+            postIt.atualizar("", "");
+        }
     }
 } 

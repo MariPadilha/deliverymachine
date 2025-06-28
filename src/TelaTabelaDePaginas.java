@@ -1,14 +1,16 @@
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import javax.swing.*;
 
-public class TelaTabelaDePaginas extends JPanel {
+public class TelaTabelaDePaginas extends JPanel{
     private Image backgroundImage;
     private DeliveryMachine jogo;
     private JLabel labelLoading;
+    private Timer timer;
 
-    public TelaTabelaDePaginas(DeliveryMachine jogo){
+    public TelaTabelaDePaginas(DeliveryMachine jogo, TelaTLB TLB){
         this.jogo = jogo;
         backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTabelaDePaginas.png").getImage();
 
@@ -34,8 +36,19 @@ public class TelaTabelaDePaginas extends JPanel {
 
         painelCentral.add(conteudo, BorderLayout.CENTER);
         add(painelCentral);
-
         criaLetreiro();
+
+    }
+
+    public void iniciarBusca(){
+        int delay = 2000 + new Random().nextInt(4001);
+        Timer timer = new Timer(delay, e -> {
+            ((Timer)e.getSource()).stop();
+            JOptionPane.showMessageDialog(this, "Endereço virtual encontrado!");
+            jogo.mostrarTela("resultado");
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     private void criaLetreiro(){
@@ -81,7 +94,7 @@ public class TelaTabelaDePaginas extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
