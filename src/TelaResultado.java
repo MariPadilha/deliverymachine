@@ -60,7 +60,7 @@ public class TelaResultado extends JPanel{
     }
 
     private void criaBotao(Dimension tamanhoTela) {
-        ImageIcon playIcon = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/restart.png"); // Ícone diferente?
+        ImageIcon playIcon = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/play.png"); // Ícone diferente?
         Image img = playIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         Icon iconRedondo = new ImageIcon(img);
 
