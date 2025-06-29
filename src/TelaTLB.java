@@ -90,6 +90,7 @@ public class TelaTLB extends JPanel{
 
             if (verificar(endVirt)) {
                 JOptionPane.showMessageDialog(this, "HIT na TLB para " + endVirt);
+                jogo.mostrarTela("resultado");
             } else {
                 JOptionPane.showMessageDialog(this, "MISS! Inserindo " + endVirt);
                 jogo.mostrarTela("tabelaPaginas");
@@ -137,9 +138,9 @@ public class TelaTLB extends JPanel{
 
     private void criaPostIt(Dimension tamanhoTela){
         double[][] proporcoes = {
-            {0.21, 0.27}, {0.305, 0.29}, {0.42, 0.28}, {0.52, 0.28}, {0.64, 0.28},
-            {0.21, 0.46}, {0.30, 0.46}, {0.39, 0.46}, {0.48, 0.46}, {0.575, 0.46}, {0.66, 0.46},
-            {0.20, 0.65}, {0.32, 0.66}, {0.42, 0.65}, {0.51, 0.65}, {0.64, 0.66}
+            {0.21, 0.27}, {0.305, 0.285}, {0.42, 0.28}, {0.52, 0.28}, {0.64, 0.275},
+            {0.21, 0.45}, {0.30, 0.45}, {0.39, 0.45}, {0.48, 0.45}, {0.575, 0.45}, {0.66, 0.45},
+            {0.20, 0.63}, {0.32, 0.64}, {0.42, 0.63}, {0.51, 0.63}, {0.64, 0.64}
         };
 
         for(int i = 0; i < 16; i++){
