@@ -24,8 +24,9 @@ public class TelaInicial extends JPanel{
     }
 
     private void criaBotao(Dimension tamanhoTela){
+        int tamanhoBotao = tamanhoTela.width / 10;
         ImageIcon playIcon = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/play.png");
-        Image img = playIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        Image img = playIcon.getImage().getScaledInstance(tamanhoBotao / 2, tamanhoBotao / 2, Image.SCALE_SMOOTH);
         Icon iconRedondo = new ImageIcon(img);
 
         RoundButton botaoRedondo = new RoundButton(
@@ -34,12 +35,12 @@ public class TelaInicial extends JPanel{
             iconRedondo
         );
 
-        botaoRedondo.setPreferredSize(new Dimension(250, 250));
+        botaoRedondo.setPreferredSize(new Dimension(tamanhoBotao, tamanhoBotao));
 
         botaoRedondo.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "endereco virtual gerado:" + jogo.getEnderecoVirtual());
-            jogo.gerarEnderecoVirtual();
             jogo.gerarEnderecoFisico();
+            jogo.gerarEnderecoVirtual();
+            JOptionPane.showMessageDialog(null, "endereço virtual gerado: " + jogo.getEnderecoVirtual());
             jogo.mostrarTela("tlb");
         });
 

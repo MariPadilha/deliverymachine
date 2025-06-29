@@ -22,16 +22,11 @@ public class TelaTLB extends JLayeredPane{
         criaBackground(tamanhoTela);
         criaPostIt(tamanhoTela);
 
-        JButton teste = new JButton("Inserir TLB");
-        teste.setBounds(50, 50, 150, 40);
-        teste.addActionListener(e -> {
-            String endVirt = String.format("0x%X", (int)(Math.random() * 256));
-            String endFis = String.format("0x%X", (int)(Math.random() * 256));
-            inserirNaTLB(endVirt, endFis);
-        });
-        add(teste, JLayeredPane.MODAL_LAYER);
+        botaoInserir();
+        botaoBuscar();
+    }
 
-        
+    private void botaoBuscar(){
         JButton testar = new JButton("Buscar endereço");
         testar.setBounds(220, 50, 200, 40);
         testar.addActionListener(e -> {
@@ -46,8 +41,17 @@ public class TelaTLB extends JLayeredPane{
             }
         });
         add(testar, JLayeredPane.MODAL_LAYER);
+    }
 
-        //criaBotao();
+    private void botaoInserir() {
+        JButton teste = new JButton("Inserir TLB");
+        teste.setBounds(50, 50, 150, 40);
+        teste.addActionListener(e -> {
+            String endVirt = String.format("0x%X", (int)(Math.random() * 256));
+            String endFis = String.format("0x%X", (int)(Math.random() * 256));
+            inserirNaTLB(endVirt, endFis);
+        });
+        add(teste, JLayeredPane.MODAL_LAYER);
     }
 
     private boolean verificar(String enderecoVirtual){
@@ -114,7 +118,7 @@ public class TelaTLB extends JLayeredPane{
 
         backgroundLabel = new JLabel(){
             @Override
-            protected void paintComponent(Graphics g) {
+            protected void paintComponent(Graphics g){
                 super.paintComponent(g);
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
