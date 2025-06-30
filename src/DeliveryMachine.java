@@ -54,9 +54,21 @@ public class DeliveryMachine extends JFrame{
     public String getEnderecoFisico(){
         return enderecoFisico;
     }
+
+    public void setEnderecoFisico(String enderecoFisico){
+        this.enderecoFisico = enderecoFisico;
+    }
   
     public TelaTabelaDePaginas getTabelaPaginas(){
         return TabelaPaginas;
+    }
+
+    public TelaResultado getResultado(){
+        return Resultado;
+    }
+
+    public TelaTLB getTLB(){
+        return TLB;
     }
     
     public void mostrarTela(String nome){

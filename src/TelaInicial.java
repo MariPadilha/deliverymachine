@@ -41,6 +41,7 @@ public class TelaInicial extends JPanel{
             jogo.gerarEnderecoFisico();
             jogo.gerarEnderecoVirtual();
             JOptionPane.showMessageDialog(null, "endereço virtual gerado: " + jogo.getEnderecoVirtual());
+            jogo.getTLB().criaLetreiro(tamanhoTela, jogo.getEnderecoVirtual());
             jogo.mostrarTela("tlb");
         });
 

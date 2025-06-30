@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +13,8 @@ public class TelaTLB extends JPanel{
     private DeliveryMachine jogo;
     private List<PostIt> postIts = new ArrayList<>();
     private Queue<PostIt> filaTLB = new LinkedList<>();
+    private JLabel titulo;
+
 
     public TelaTLB(DeliveryMachine jogo){
         this.jogo = jogo;
@@ -31,7 +35,7 @@ public class TelaTLB extends JPanel{
         int altura = tamanhoTela.height / 15;
 
         Font fonteBotao = new Font("Monospaced", Font.BOLD, tamanhoTela.height / 45);
-        Color corTexto = Color.WHITE;
+        Color corTexto = Color.black;
         Color corFundo = new Color(200, 111, 58);
         Color corHover = new Color(139, 0, 0, 180);
 
@@ -65,7 +69,6 @@ public class TelaTLB extends JPanel{
             inserirNaTLB(endVirt, endFis);
         });
 
-        // Buscar endereço
         JButton botaoBuscar = new JButton("Buscar endereço");
         botaoBuscar.setFont(fonteBotao);
         botaoBuscar.setForeground(corTexto);
@@ -88,13 +91,15 @@ public class TelaTLB extends JPanel{
         botaoBuscar.addActionListener(e -> {
             String endVirt = jogo.getEnderecoVirtual();
 
-            if (verificar(endVirt)) {
+            if(verificar(endVirt)){
                 JOptionPane.showMessageDialog(this, "HIT na TLB para " + endVirt);
+                jogo.getResultado().criaInformacoes(1);
                 jogo.mostrarTela("resultado");
-            } else {
+            }else{
                 JOptionPane.showMessageDialog(this, "MISS! Inserindo " + endVirt);
                 jogo.mostrarTela("tabelaPaginas");
-                jogo.getTabelaPaginas().iniciarBusca();
+                inserirNaTLB(endVirt, jogo.getEnderecoFisico());
+                jogo.getTabelaPaginas().iniciarBusca(tamanhoTela);
             }
         });
 
@@ -130,11 +135,57 @@ public class TelaTLB extends JPanel{
     private boolean verificar(String enderecoVirtual){
         for(PostIt postIt : filaTLB){
             if(postIt.getEnderecoVirtual().equals(enderecoVirtual)){
+                jogo.setEnderecoFisico(postIt.getEnderecoVirtual());
                 return true;
             }
         }
         return false;
     }
+
+    public void criaLetreiro(Dimension tamanhoTela, String endereco){
+        if (titulo == null) {
+            Font fontePersonalizada;
+            try{
+                fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("/home/mari/Development/project_java/delivery_machine/fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                ge.registerFont(fontePersonalizada);
+            }catch(IOException | FontFormatException e){
+                e.printStackTrace();
+                fontePersonalizada = new Font("Monospaced", Font.BOLD, 150);
+            }
+
+            titulo = new JLabel("", SwingConstants.CENTER){
+                @Override
+                protected void paintComponent(Graphics g){
+                    Graphics2D g2d = (Graphics2D) g.create();
+                    g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+                    String texto = getText();
+                    FontMetrics fm = g2d.getFontMetrics(getFont());
+                    int textoLargura = fm.stringWidth(texto);
+                    int x = (int)((getWidth() - textoLargura) * 0.35);
+                    int y = getBaseline(getWidth(), getHeight());
+
+                    g2d.setColor(new Color(139, 0, 0, 180));
+                    g2d.drawString(texto, x + 10, y);
+
+                    g2d.setColor(new Color(200, 111, 58));
+                    g2d.drawString(texto, x, y);
+
+                    g2d.dispose();
+                }
+            };
+            titulo.setFont(fontePersonalizada);
+            titulo.setOpaque(false);
+            titulo.setBounds(0, 80, tamanhoTela.width, 300);
+            add(titulo);
+        }
+
+        titulo.setText("endereço virtual desejado: " + endereco);
+        titulo.repaint();
+    }
+
 
     private void criaPostIt(Dimension tamanhoTela){
         double[][] proporcoes = {

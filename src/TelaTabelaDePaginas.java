@@ -40,11 +40,12 @@ public class TelaTabelaDePaginas extends JPanel{
 
     }
 
-    public void iniciarBusca(){
+    public void iniciarBusca(Dimension tamanhoTela){
         int delay = 2000 + new Random().nextInt(4001);
-        Timer timer = new Timer(delay, e -> {
+        timer = new Timer(delay, e -> {
             ((Timer)e.getSource()).stop();
             JOptionPane.showMessageDialog(this, "Endereço virtual encontrado!");
+            jogo.getResultado().criaInformacoes(2);
             jogo.mostrarTela("resultado");
         });
         timer.setRepeats(false);

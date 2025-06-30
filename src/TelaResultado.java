@@ -6,6 +6,7 @@ import javax.swing.*;
 public class TelaResultado extends JPanel{
     private DeliveryMachine jogo;
     private Image backgroundImage;
+    private JPanel blocoCinza;
 
     public TelaResultado(DeliveryMachine jogo){
         this.jogo = jogo;
@@ -16,24 +17,85 @@ public class TelaResultado extends JPanel{
         backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTelaResultado.png").getImage();
 
         criaLetreiro(tamanhoTela);
-        criaBotao(tamanhoTela);
+        criaBotao(tamanhoTela, 0.28, "/home/mari/Development/project_java/delivery_machine/imagens/playpreto.png", 1);
+        criaBotao(tamanhoTela, 0.50, "/home/mari/Development/project_java/delivery_machine/imagens/restart.png", 2);
+        criaBotao(tamanhoTela, 0.70, "/home/mari/Development/project_java/delivery_machine/imagens/x.png", 3);
+        criaTextoInferiorFixo(tamanhoTela);
+        criaBloco(tamanhoTela);
     }
 
-    private void criaLetreiro(Dimension tamanhoTela) {
+    private JLabel criaLinhaTexto(String texto){
+        JLabel label = new JLabel(texto);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Monospaced", Font.PLAIN, 50));
+        return label;
+    }
+
+    public void criaInformacoes(int opcao){
+        if (blocoCinza != null) {
+            blocoCinza.removeAll(); // limpa os textos antigos
+            blocoCinza.revalidate(); // reprocessa o layout
+            blocoCinza.repaint();    // redesenha os componentes
+        }
+
+        String encontrado = switch (opcao) {
+            case 1 -> "TLB";
+            case 2 -> "Tabela de Páginas";
+            default -> "Desconhecido";
+        };
+        JLabel label1 = criaLinhaTexto("Endereço virtual: " + jogo.getEnderecoVirtual());
+        JLabel label2 = criaLinhaTexto("Endereço físico: " + jogo.getEnderecoFisico());
+        JLabel label3 = criaLinhaTexto("Encontrado em: " + encontrado);
+        JLabel label4 = criaLinhaTexto("Tempo decorrido: " +  (int)(Math.random() * 10000 + 200) + " ms");
+
+        blocoCinza.add(label1);
+        blocoCinza.add(Box.createVerticalStrut(20));
+        blocoCinza.add(label2);
+        blocoCinza.add(Box.createVerticalStrut(20));
+        blocoCinza.add(label3);
+        blocoCinza.add(Box.createVerticalStrut(20));
+        blocoCinza.add(label4);
+    }
+
+    private void criaBloco(Dimension tamanhoTela){
+        JPanel sombra = new JPanel();
+        sombra.setBackground(new Color(30,30,30));
+        sombra.setOpaque(true);
+
+        int largura = (int) (tamanhoTela.width * 0.65);
+        int altura = (int) (tamanhoTela.height * 0.6);
+        int xSombra = (tamanhoTela.width - largura) / 2 + 20;
+        int ySombra = (tamanhoTela.height - altura) / 2 + 20;
+        sombra.setBounds(xSombra, ySombra, largura, altura);
+        add(sombra);
+
+        blocoCinza = new JPanel();
+        blocoCinza.setBackground(new Color(60,60,60));
+        blocoCinza.setLayout(new BoxLayout(blocoCinza, BoxLayout.Y_AXIS));
+        blocoCinza.setOpaque(true);
+        blocoCinza.setBounds((tamanhoTela.width - largura) / 2, (tamanhoTela.height - altura) / 2, largura, altura);
+
+        blocoCinza.setBorder(BorderFactory.createEmptyBorder(50, 80, 50, 80)); // margem interna
+        repaint();
+        add(blocoCinza);
+        add(sombra);
+    }
+
+    private void criaLetreiro(Dimension tamanhoTela){
         Font fontePersonalizada;
-        try {
+        try{
             fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
                 new File("/home/mari/Development/project_java/delivery_machine/fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(fontePersonalizada);
-        } catch (IOException | FontFormatException e) {
+        }catch(IOException | FontFormatException e){
             e.printStackTrace();
             fontePersonalizada = new Font("Monospaced", Font.BOLD, 150);
         }
 
-        JLabel titulo = new JLabel("Endereço encontrado!", SwingConstants.CENTER) {
+        JLabel titulo = new JLabel("Endereço encontrado!", SwingConstants.CENTER){
             @Override
-            protected void paintComponent(Graphics g) {
+            protected void paintComponent(Graphics g){
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
@@ -59,8 +121,8 @@ public class TelaResultado extends JPanel{
         add(titulo);
     }
 
-    private void criaBotao(Dimension tamanhoTela) {
-        ImageIcon playIcon = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/play.png"); // Ícone diferente?
+    private void criaBotao(Dimension tamanhoTela, double proporcaoX, String caminho, int opcao){
+        ImageIcon playIcon = new ImageIcon(caminho);
         Image img = playIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         Icon iconRedondo = new ImageIcon(img);
 
@@ -73,19 +135,53 @@ public class TelaResultado extends JPanel{
         botaoRedondo.setPreferredSize(new Dimension(250, 250));
 
         botaoRedondo.addActionListener(e -> {
-            jogo.gerarEnderecoVirtual(); // Gera um novo endereço para a próxima rodada
-            jogo.mostrarTela("inicio");
+            jogo.gerarEnderecoVirtual();
+            jogo.gerarEnderecoFisico();
+            if(opcao == 1){
+                jogo.gerarEnderecoFisico();
+                jogo.gerarEnderecoVirtual();
+                jogo.getTLB().criaLetreiro(tamanhoTela, jogo.getEnderecoVirtual());
+                jogo.mostrarTela("tlb");
+            }else if(opcao == 2){
+                jogo.getTLB().resetar();
+                jogo.mostrarTela("inicio");
+            }else if(opcao == 3)
+                System.exit(0);
         });
-
         JPanel painelCentral = new JPanel(new GridBagLayout());
         painelCentral.setOpaque(false);
-        painelCentral.setBounds(
-            (tamanhoTela.width - 250) / 2,
-            (tamanhoTela.height - 250) / 2,
+        painelCentral.setBounds((int)(
+            (tamanhoTela.width - 250)*proporcaoX),
+            (int)((tamanhoTela.height - 250)*0.95),
             250, 250
         );
         painelCentral.add(botaoRedondo);
         add(painelCentral);
+    }
+
+    private JLabel criaTextoFixo(String texto) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Monospaced", Font.BOLD, 36));
+        label.setForeground(Color.WHITE);
+        return label;
+    }
+
+    private void criaTextoInferiorFixo(Dimension tamanhoTela) {
+        JLabel continuar = criaTextoFixo("Continuar");
+        JLabel reiniciar = criaTextoFixo("Reiniciar");
+        JLabel parar = criaTextoFixo("Parar");
+
+        int y = (int)(tamanhoTela.height * 0.75);
+        int largura = tamanhoTela.width;
+
+        continuar.setBounds((int)(largura * 0.265), y, 300, 40);
+        reiniciar.setBounds((int)(largura * 0.475), y, 300, 40); 
+        parar.setBounds((int)(largura * 0.665), y, 300, 40);     
+
+        setLayout(null);
+        add(continuar);
+        add(reiniciar);
+        add(parar);
     }
 
     @Override
