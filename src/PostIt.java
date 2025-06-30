@@ -7,7 +7,7 @@ public class PostIt extends JLabel{
     private int X;
     private int Y;
 
-    public PostIt(String enderecoVirtual, String enderecoFisico, int x, int y) {
+    public PostIt(String enderecoVirtual, String enderecoFisico, int x, int y){
         this.enderecoVirtual = enderecoVirtual;
         this.enderecoFisico = enderecoFisico;
         this.X = x;
@@ -40,7 +40,7 @@ public class PostIt extends JLabel{
         return Y;
     }
 
-    private void criaLabel(int x, int y) {
+    private void criaLabel(int x, int y){
         setBounds(x, y, 150, 80);
         setForeground(Color.BLACK);
         setFont(new Font("Monospaced", Font.BOLD, 30));

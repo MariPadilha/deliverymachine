@@ -32,13 +32,13 @@ public class TelaResultado extends JPanel{
     }
 
     public void criaInformacoes(int opcao){
-        if (blocoCinza != null) {
-            blocoCinza.removeAll(); // limpa os textos antigos
-            blocoCinza.revalidate(); // reprocessa o layout
-            blocoCinza.repaint();    // redesenha os componentes
+        if(blocoCinza != null){
+            blocoCinza.removeAll();
+            blocoCinza.revalidate();
+            blocoCinza.repaint();
         }
 
-        String encontrado = switch (opcao) {
+        String encontrado = switch (opcao){
             case 1 -> "TLB";
             case 2 -> "Tabela de Páginas";
             default -> "Desconhecido";
@@ -166,7 +166,7 @@ public class TelaResultado extends JPanel{
         return label;
     }
 
-    private void criaTextoInferiorFixo(Dimension tamanhoTela) {
+    private void criaTextoInferiorFixo(Dimension tamanhoTela){
         JLabel continuar = criaTextoFixo("Continuar");
         JLabel reiniciar = criaTextoFixo("Reiniciar");
         JLabel parar = criaTextoFixo("Parar");
@@ -185,7 +185,7 @@ public class TelaResultado extends JPanel{
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }

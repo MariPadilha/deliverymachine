@@ -20,12 +20,10 @@ public class TelaTabelaDePaginas extends JPanel{
 
         backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTabelaDePaginas.png").getImage();
 
-        // Painel que centraliza os elementos
         JPanel painelCentral = new JPanel(new BorderLayout());
         painelCentral.setOpaque(false);
         painelCentral.setBounds(0, 0, tamanhoTela.width, tamanhoTela.height);
 
-        // Carrega ícone animado (GIF)
         ImageIcon loadingIcon = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/loading.gif");
         JLabel loadingLabel = new JLabel(loadingIcon);
         loadingLabel.setHorizontalAlignment(SwingConstants.CENTER);

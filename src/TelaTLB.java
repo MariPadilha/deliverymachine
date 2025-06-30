@@ -39,11 +39,10 @@ public class TelaTLB extends JPanel{
         Color corFundo = new Color(200, 111, 58);
         Color corHover = new Color(139, 0, 0, 180);
 
-        // ⬇️ AQUI: Criação da borda com "sombra"
         Border sombra = BorderFactory.createMatteBorder(4, 4, 4, 4, new Color(139, 0, 0, 180));
         Border preenchimento = BorderFactory.createEmptyBorder(10, 20, 10, 20);
         Border bordaComposta = BorderFactory.createCompoundBorder(sombra, preenchimento);
-        // Inserir TLB
+
         JButton botaoInserir = new JButton("Inserir TLB");
         botaoInserir.setFont(fonteBotao);
         botaoInserir.setForeground(corTexto);
@@ -78,12 +77,12 @@ public class TelaTLB extends JPanel{
         botaoBuscar.setBorder(bordaComposta);
         botaoBuscar.setOpaque(true);
 
-        botaoBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        botaoBuscar.addMouseListener(new java.awt.event.MouseAdapter(){
+            public void mouseEntered(java.awt.event.MouseEvent evt){
                 botaoBuscar.setBackground(corHover);
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(java.awt.event.MouseEvent evt){
                 botaoBuscar.setBackground(corFundo);
             }
         });
@@ -114,22 +113,18 @@ public class TelaTLB extends JPanel{
         painelBotoes.add(botaoBuscar);
         painelBotoes.add(Box.createHorizontalGlue());
 
-
-        // Painel wrapper para centralizar na parte inferior
         JPanel painelWrapper = new JPanel();
         painelWrapper.setLayout(new BorderLayout());
         painelWrapper.setOpaque(false);
         painelWrapper.add(painelBotoes, BorderLayout.CENTER);
 
-        // Defina posição e tamanho manualmente
         int larguraWrapper = tamanhoTela.width;
-        int alturaWrapper = altura + 60; // Altura do botão + margem
+        int alturaWrapper = altura + 60;
         int xWrapper = 0;
         int yWrapper = tamanhoTela.height - alturaWrapper - 100;
 
         painelWrapper.setBounds(xWrapper, yWrapper, larguraWrapper, alturaWrapper);
         add(painelWrapper);
-
     }
 
     private boolean verificar(String enderecoVirtual){
@@ -143,7 +138,7 @@ public class TelaTLB extends JPanel{
     }
 
     public void criaLetreiro(Dimension tamanhoTela, String endereco){
-        if (titulo == null) {
+        if(titulo == null){
             Font fontePersonalizada;
             try{
                 fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
@@ -186,7 +181,6 @@ public class TelaTLB extends JPanel{
         titulo.repaint();
     }
 
-
     private void criaPostIt(Dimension tamanhoTela){
         double[][] proporcoes = {
             {0.21, 0.27}, {0.305, 0.285}, {0.42, 0.28}, {0.52, 0.28}, {0.64, 0.275},
@@ -210,7 +204,7 @@ public class TelaTLB extends JPanel{
 
         if(filaTLB.size() < 16){
             novo = postIts.get(filaTLB.size());
-        } else {
+        }else{
             PostIt maisAntigo = filaTLB.poll();
             novo = maisAntigo;
         }
