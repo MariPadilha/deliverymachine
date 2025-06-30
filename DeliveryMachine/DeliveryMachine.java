@@ -47,6 +47,10 @@ public class DeliveryMachine extends JFrame{
         enderecoFisico = String.format("0x%X", (int)(Math.random() * 256));
     }
 
+    public void setEnderecoFisico(String enderecoFisico){
+        this.enderecoFisico = enderecoFisico;
+    }
+  
     public String getEnderecoVirtual(){
         return enderecoVirtual;
     }
@@ -55,10 +59,6 @@ public class DeliveryMachine extends JFrame{
         return enderecoFisico;
     }
 
-    public void setEnderecoFisico(String enderecoFisico){
-        this.enderecoFisico = enderecoFisico;
-    }
-  
     public TelaTabelaDePaginas getTabelaPaginas(){
         return TabelaPaginas;
     }
@@ -75,13 +75,17 @@ public class DeliveryMachine extends JFrame{
         layout.show(container, nome);
     }
 
-    public void reiniciarJogo(){
-        gerarEnderecoVirtual();
-        gerarEnderecoFisico();
+    public void reiniciar(){
         TLB.resetar();
-        mostrarTela("tlb");
+        mostrarTela("inicio");
     }
 
+    public void continuar(Dimension tamanhoTela){
+        gerarEnderecoFisico();
+        gerarEnderecoVirtual();
+        TLB.criaLetreiro(tamanhoTela, enderecoVirtual);
+        mostrarTela("tlb");
+    }
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> new DeliveryMachine());
     }

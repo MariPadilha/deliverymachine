@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.*;
 
 public class TelaResultado extends JPanel{
@@ -82,42 +80,14 @@ public class TelaResultado extends JPanel{
     }
 
     private void criaLetreiro(Dimension tamanhoTela){
-        Font fontePersonalizada;
-        try{
-            fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
-                new File("fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(fontePersonalizada);
-        }catch(IOException | FontFormatException e){
-            e.printStackTrace();
-            fontePersonalizada = new Font("Monospaced", Font.BOLD, 150);
-        }
-
-        JLabel titulo = new JLabel("Endereço encontrado!", SwingConstants.CENTER){
-            @Override
-            protected void paintComponent(Graphics g){
-                Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-                String texto = getText();
-                FontMetrics fm = g2d.getFontMetrics(getFont());
-                int textoLargura = fm.stringWidth(texto);
-                int x = (getWidth() - textoLargura) / 2;
-                int y = getBaseline(getWidth(), getHeight());
-
-                g2d.setColor(new Color(139, 0, 0, 180));
-                g2d.drawString(texto, x + 10, y);
-
-                g2d.setColor(new Color(200, 111, 58));
-                g2d.drawString(texto, x, y);
-
-                g2d.dispose();
-            }
-        };
-
-        titulo.setFont(fontePersonalizada);
-        titulo.setOpaque(false);
-        titulo.setBounds(0, 80, tamanhoTela.width, 300);
+        JLabel titulo = LetreiroComSombra.criar(
+            "Endereço encontrado!",
+            tamanhoTela,
+            0.12f,
+            new Color(139, 0, 0, 180),
+            new Color(200, 111, 58)
+        );
+        titulo.setBounds(0, (int)(tamanhoTela.height * 0.02), tamanhoTela.width, (int)(tamanhoTela.height * 0.2));
         add(titulo);
     }
 
@@ -137,15 +107,11 @@ public class TelaResultado extends JPanel{
         botaoRedondo.addActionListener(e -> {
             jogo.gerarEnderecoVirtual();
             jogo.gerarEnderecoFisico();
-            if(opcao == 1){
-                jogo.gerarEnderecoFisico();
-                jogo.gerarEnderecoVirtual();
-                jogo.getTLB().criaLetreiro(tamanhoTela, jogo.getEnderecoVirtual());
-                jogo.mostrarTela("tlb");
-            }else if(opcao == 2){
-                jogo.getTLB().resetar();
-                jogo.mostrarTela("inicio");
-            }else if(opcao == 3)
+            if(opcao == 1)
+                jogo.continuar(tamanhoTela);
+            else if(opcao == 2)
+                jogo.reiniciar();
+            else if(opcao == 3)
                 System.exit(0);
         });
         JPanel painelCentral = new JPanel(new GridBagLayout());

@@ -29,7 +29,7 @@ class RoundButton extends JButton{
         g2.setColor(fillColor);
         g2.fillOval(0, 0, w - 10, h - 10);
 
-        if (icon != null) {
+        if(icon != null){
             int iconW = icon.getIconWidth();
             int iconH = icon.getIconHeight();
             int x = (w - iconW) / 2 - 5;

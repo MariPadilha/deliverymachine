@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.*;
 
 public class TelaInicial extends JPanel{
@@ -52,56 +50,14 @@ public class TelaInicial extends JPanel{
     }
 
     private void criaLetreiro(Dimension tamanhoTela){
-        float tamanhoFonte = tamanhoTela.height * 0.12f;
-        int deslocamentoX = tamanhoTela.width / 200;
-
-        Font fonte = carregarFontePersonalizada(
-            "fonte/VT323-Regular.ttf",
-            tamanhoFonte
+        JLabel titulo = LetreiroComSombra.criar(
+            "DELIVERY MACHINE",
+            tamanhoTela,
+            0.12f,
+            new Color(139, 0, 0, 180),
+            new Color(200, 111, 58)
         );
-
-        JLabel titulo = aplicarSombraTexto("▶ DELIVERY MACHINE ◀", fonte, 
-            new Color(139, 0, 0, 180), new Color(200, 111, 58), deslocamentoX);
-
-        int margemTopo = (int)(tamanhoTela.height * 0.15);
-        titulo.setBorder(BorderFactory.createEmptyBorder(margemTopo, 0, 0, 0));
-        titulo.setPreferredSize(new Dimension(tamanhoTela.width, (int)tamanhoFonte * 2));
-
         add(titulo, BorderLayout.NORTH);
-    }
-
-    private Font carregarFontePersonalizada(String caminho, float tamanho){
-        try{
-            Font fonte = Font.createFont(Font.TRUETYPE_FONT, new File(caminho)).deriveFont(Font.BOLD, tamanho);
-            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fonte);
-            return fonte;
-        }catch(IOException | FontFormatException e){
-            e.printStackTrace();
-            return new Font("Monospaced", Font.BOLD, (int)tamanho);
-        }
-    }
-
-    private JLabel aplicarSombraTexto(String texto, Font fonte, Color corSombra, Color corTexto, int deslocamentoX){
-        return new JLabel(texto, SwingConstants.CENTER){
-            @Override
-            protected void paintComponent(Graphics g){
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-                g2.setFont(fonte);
-                FontMetrics fm = g2.getFontMetrics();
-                int x = (getWidth() - fm.stringWidth(texto)) / 2;
-                int y = getBaseline(getWidth(), getHeight());
-
-                g2.setColor(corSombra);
-                g2.drawString(texto, x + deslocamentoX, y);
-
-                g2.setColor(corTexto);
-                g2.drawString(texto, x, y);
-
-                g2.dispose();
-            }
-        };
     }
 
     @Override
