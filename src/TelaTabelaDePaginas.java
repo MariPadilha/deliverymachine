@@ -12,19 +12,19 @@ public class TelaTabelaDePaginas extends JPanel{
 
     public TelaTabelaDePaginas(DeliveryMachine jogo, TelaTLB TLB){
         this.jogo = jogo;
-        backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTabelaDePaginas.png").getImage();
+        backgroundImage = new ImageIcon("imagens/backgroundTabelaDePaginas.png").getImage();
 
         setLayout(null);
         Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
         setPreferredSize(tamanhoTela);
 
-        backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTabelaDePaginas.png").getImage();
+        backgroundImage = new ImageIcon("imagens/backgroundTabelaDePaginas.png").getImage();
 
         JPanel painelCentral = new JPanel(new BorderLayout());
         painelCentral.setOpaque(false);
         painelCentral.setBounds(0, 0, tamanhoTela.width, tamanhoTela.height);
 
-        ImageIcon loadingIcon = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/loading.gif");
+        ImageIcon loadingIcon = new ImageIcon("imagens/loading.gif");
         JLabel loadingLabel = new JLabel(loadingIcon);
         loadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -55,7 +55,7 @@ public class TelaTabelaDePaginas extends JPanel{
 
         try{
             fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
-                new File("/home/mari/Development/project_java/delivery_machine/fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
+                new File("fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(fontePersonalizada);
         }catch(IOException | FontFormatException e){

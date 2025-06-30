@@ -20,12 +20,12 @@ public class TelaInicial extends JPanel{
     }
 
     private void criaBackground(Dimension tamanhoTela){
-        backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTelaInicial.png").getImage();
+        backgroundImage = new ImageIcon("imagens/backgroundTelaInicial.png").getImage();
     }
 
     private void criaBotao(Dimension tamanhoTela){
         int tamanhoBotao = tamanhoTela.width / 10;
-        ImageIcon playIcon = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/play.png");
+        ImageIcon playIcon = new ImageIcon("imagens/play.png");
         Image img = playIcon.getImage().getScaledInstance(tamanhoBotao / 2, tamanhoBotao / 2, Image.SCALE_SMOOTH);
         Icon iconRedondo = new ImageIcon(img);
 
@@ -56,7 +56,7 @@ public class TelaInicial extends JPanel{
         int deslocamentoX = tamanhoTela.width / 200;
 
         Font fonte = carregarFontePersonalizada(
-            "/home/mari/Development/project_java/delivery_machine/fonte/VT323-Regular.ttf",
+            "fonte/VT323-Regular.ttf",
             tamanhoFonte
         );
 

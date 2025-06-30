@@ -142,7 +142,7 @@ public class TelaTLB extends JPanel{
             Font fontePersonalizada;
             try{
                 fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("/home/mari/Development/project_java/delivery_machine/fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
+                    new File("fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 ge.registerFont(fontePersonalizada);
             }catch(IOException | FontFormatException e){
@@ -196,7 +196,7 @@ public class TelaTLB extends JPanel{
     }
 
     private void criaBackground(Dimension tamanhoTela){
-        backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTLB.png").getImage();
+        backgroundImage = new ImageIcon("imagens/backgroundTLB.png").getImage();
     }
 
     public void inserirNaTLB(String enderecoVirtual, String enderecoFisico){

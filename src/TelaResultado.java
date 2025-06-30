@@ -14,12 +14,12 @@ public class TelaResultado extends JPanel{
         Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
         setPreferredSize(tamanhoTela);
 
-        backgroundImage = new ImageIcon("/home/mari/Development/project_java/delivery_machine/imagens/backgroundTelaResultado.png").getImage();
+        backgroundImage = new ImageIcon("imagens/backgroundTelaResultado.png").getImage();
 
         criaLetreiro(tamanhoTela);
-        criaBotao(tamanhoTela, 0.28, "/home/mari/Development/project_java/delivery_machine/imagens/playpreto.png", 1);
-        criaBotao(tamanhoTela, 0.50, "/home/mari/Development/project_java/delivery_machine/imagens/restart.png", 2);
-        criaBotao(tamanhoTela, 0.70, "/home/mari/Development/project_java/delivery_machine/imagens/x.png", 3);
+        criaBotao(tamanhoTela, 0.28, "imagens/playpreto.png", 1);
+        criaBotao(tamanhoTela, 0.50, "imagens/restart.png", 2);
+        criaBotao(tamanhoTela, 0.70, "imagens/x.png", 3);
         criaTextoInferiorFixo(tamanhoTela);
         criaBloco(tamanhoTela);
     }
@@ -85,7 +85,7 @@ public class TelaResultado extends JPanel{
         Font fontePersonalizada;
         try{
             fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
-                new File("/home/mari/Development/project_java/delivery_machine/fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
+                new File("fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(fontePersonalizada);
         }catch(IOException | FontFormatException e){
