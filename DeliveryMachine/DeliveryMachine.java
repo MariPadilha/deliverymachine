@@ -86,6 +86,7 @@ public class DeliveryMachine extends JFrame{
         TLB.criaLetreiro(tamanhoTela, enderecoVirtual);
         mostrarTela("tlb");
     }
+    
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> new DeliveryMachine());
     }

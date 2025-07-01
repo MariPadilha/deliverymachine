@@ -39,15 +39,16 @@ public class LetreiroComSombra{
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
                 g2.setFont(fonte);
+                String textoAtual = getText();
                 FontMetrics fm = g2.getFontMetrics();
-                int x = (getWidth() - fm.stringWidth(texto)) / 2;
+                int x = (getWidth() - fm.stringWidth(textoAtual)) / 2;
                 int y = getBaseline(getWidth(), getHeight());
 
                 g2.setColor(corSombra);
-                g2.drawString(texto, x + deslocamentoX, y);
+                g2.drawString(textoAtual, x + deslocamentoX, y);
 
                 g2.setColor(corTexto);
-                g2.drawString(texto, x, y);
+                g2.drawString(textoAtual, x, y);
 
                 g2.dispose();
             }

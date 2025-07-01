@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +12,7 @@ public class TelaTLB extends JPanel{
     private List<PostIt> postIts = new ArrayList<>();
     private Queue<PostIt> filaTLB = new LinkedList<>();
     private JLabel titulo;
-
+    
 
     public TelaTLB(DeliveryMachine jogo){
         this.jogo = jogo;
@@ -139,46 +137,20 @@ public class TelaTLB extends JPanel{
 
     public void criaLetreiro(Dimension tamanhoTela, String endereco){
         if(titulo == null){
-            Font fontePersonalizada;
-            try{
-                fontePersonalizada = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonte/VT323-Regular.ttf")).deriveFont(Font.BOLD, 150f);
-                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                ge.registerFont(fontePersonalizada);
-            }catch(IOException | FontFormatException e){
-                e.printStackTrace();
-                fontePersonalizada = new Font("Monospaced", Font.BOLD, 150);
-            }
-
-            titulo = new JLabel("", SwingConstants.CENTER){
-                @Override
-                protected void paintComponent(Graphics g){
-                    Graphics2D g2d = (Graphics2D) g.create();
-                    g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-                    String texto = getText();
-                    FontMetrics fm = g2d.getFontMetrics(getFont());
-                    int textoLargura = fm.stringWidth(texto);
-                    int x = (int)((getWidth() - textoLargura) * 0.35);
-                    int y = getBaseline(getWidth(), getHeight());
-
-                    g2d.setColor(new Color(139, 0, 0, 180));
-                    g2d.drawString(texto, x + 10, y);
-
-                    g2d.setColor(new Color(200, 111, 58));
-                    g2d.drawString(texto, x, y);
-
-                    g2d.dispose();
-                }
-            };
-            titulo.setFont(fontePersonalizada);
-            titulo.setOpaque(false);
-            titulo.setBounds(0, 80, tamanhoTela.width, 300);
+            titulo = LetreiroComSombra.criar(
+                "Endereço encontrado!",
+                tamanhoTela,
+                0.08f,
+                new Color(139, 0, 0, 180),
+                new Color(200, 111, 58)
+            );
+            titulo.setBounds(0, (int)(tamanhoTela.height * 0.001), tamanhoTela.width, (int)(tamanhoTela.height * 0.15));
             add(titulo);
         }
-
         titulo.setText("endereço virtual desejado: " + endereco);
+        titulo.revalidate();
         titulo.repaint();
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     private void criaPostIt(Dimension tamanhoTela){
