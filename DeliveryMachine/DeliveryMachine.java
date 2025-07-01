@@ -10,6 +10,8 @@ public class DeliveryMachine extends JFrame{
     private TelaTLB TLB;
     private TelaTabelaDePaginas TabelaPaginas;
     private TelaResultado Resultado;
+    private EstadoDoJogo estadoAtual;
+    private boolean politicaRandomica;
 
 
     public DeliveryMachine(){
@@ -19,6 +21,7 @@ public class DeliveryMachine extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setResizable(false);
+        politicaRandomica = false;
 
         layout = new CardLayout();
         container = new JPanel(layout);
@@ -28,6 +31,7 @@ public class DeliveryMachine extends JFrame{
         Resultado = new TelaResultado(this);
         
         criarNavegabilidade();
+        setEstado(new EstadoInicial(this));
     }
 
     private void criarNavegabilidade(){
@@ -79,15 +83,31 @@ public class DeliveryMachine extends JFrame{
         TLB.resetar();
         mostrarTela("inicio");
     }
-
-    public void continuar(Dimension tamanhoTela){
-        gerarEnderecoFisico();
-        gerarEnderecoVirtual();
-        TLB.criaLetreiro(tamanhoTela, enderecoVirtual);
-        mostrarTela("tlb");
-    }
     
     public static void main(String[] args){
         SwingUtilities.invokeLater(() -> new DeliveryMachine());
+    }
+
+    public void setEstado(EstadoDoJogo novoEstado){
+        this.estadoAtual = novoEstado;
+        estadoAtual.aoEntrar();
+    }
+
+    public void interagirEstado(){
+        if(estadoAtual != null)
+            estadoAtual.aoInteragir();
+    }
+
+    public void alternarPoliticaTLB(){
+        politicaRandomica = !politicaRandomica;
+        if(politicaRandomica){
+            TLB.setPolitica(new SubstituicaoRandomica());
+        }else{
+            TLB.setPolitica(new SubstituicaoFIFO());
+        }
+    }
+
+    public String getPoliticaAtual(){
+        return politicaRandomica ? "Random" : "FIFO";
     }
 }

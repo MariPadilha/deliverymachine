@@ -92,6 +92,7 @@ public class TelaResultado extends JPanel{
     }
 
     private void criaBotao(Dimension tamanhoTela, double proporcaoX, String caminho, int opcao){
+        EstadoInicial reiniciar = new EstadoInicial(jogo);
         ImageIcon playIcon = new ImageIcon(caminho);
         Image img = playIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         Icon iconRedondo = new ImageIcon(img);
@@ -108,9 +109,9 @@ public class TelaResultado extends JPanel{
             jogo.gerarEnderecoVirtual();
             jogo.gerarEnderecoFisico();
             if(opcao == 1)
-                jogo.continuar(tamanhoTela);
+                jogo.interagirEstado();
             else if(opcao == 2)
-                jogo.reiniciar();
+                jogo.setEstado(reiniciar);
             else if(opcao == 3)
                 System.exit(0);
         });

@@ -12,10 +12,12 @@ public class TelaTLB extends JPanel{
     private List<PostIt> postIts = new ArrayList<>();
     private Queue<PostIt> filaTLB = new LinkedList<>();
     private JLabel titulo;
-    
+    private PoliticaSubstituicaoTLB politica = new SubstituicaoFIFO();
 
+    
     public TelaTLB(DeliveryMachine jogo){
         this.jogo = jogo;
+        politica = new SubstituicaoFIFO();
         
         setLayout(null);
         Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
@@ -85,20 +87,7 @@ public class TelaTLB extends JPanel{
             }
         });
 
-        botaoBuscar.addActionListener(e -> {
-            String endVirt = jogo.getEnderecoVirtual();
-
-            if(verificar(endVirt)){
-                JOptionPane.showMessageDialog(this, "HIT na TLB para " + endVirt);
-                jogo.getResultado().criaInformacoes(1);
-                jogo.mostrarTela("resultado");
-            }else{
-                JOptionPane.showMessageDialog(this, "MISS! Inserindo " + endVirt);
-                jogo.mostrarTela("tabelaPaginas");
-                inserirNaTLB(endVirt, jogo.getEnderecoFisico());
-                jogo.getTabelaPaginas().iniciarBusca(tamanhoTela);
-            }
-        });
+        botaoBuscar.addActionListener(e -> jogo.interagirEstado());
 
         JPanel painelBotoes = new JPanel();
         painelBotoes.setOpaque(false);
@@ -125,7 +114,7 @@ public class TelaTLB extends JPanel{
         add(painelWrapper);
     }
 
-    private boolean verificar(String enderecoVirtual){
+    public boolean verificar(String enderecoVirtual){
         for(PostIt postIt : filaTLB){
             if(postIt.getEnderecoVirtual().equals(enderecoVirtual)){
                 jogo.setEnderecoFisico(postIt.getEnderecoVirtual());
@@ -174,23 +163,28 @@ public class TelaTLB extends JPanel{
     public void inserirNaTLB(String enderecoVirtual, String enderecoFisico){
         PostIt novo;
 
-        if(filaTLB.size() < 16){
+        if (filaTLB.size() < 16){
             novo = postIts.get(filaTLB.size());
         }else{
-            PostIt maisAntigo = filaTLB.poll();
-            novo = maisAntigo;
+            PostIt paraSubstituir = politica.escolher(filaTLB, postIts);
+            filaTLB.remove(paraSubstituir);
+            novo = paraSubstituir;
         }
 
         novo.atualizar(enderecoVirtual, enderecoFisico);
         novo.repaint();
         filaTLB.add(novo);
-    }  
+    }
 
     public void resetar(){
         for(PostIt postIt : postIts){
             postIt.atualizar("", "");
         }
         filaTLB.clear();
+    }
+
+    public void setPolitica(PoliticaSubstituicaoTLB politica){
+        this.politica = politica;
     }
 
     @Override
